@@ -4,7 +4,7 @@
 	if((isset ($_SESSION['user']) == true)){
 	  $logado=$_SESSION['user'];
 		$logtype='Voluntario';
-		$result=mysqli_query($conn,"select Foto from tblvoluntario where Utilizador='".$logado."'");
+		$result=mysqli_query($conn,"select Foto from tblvoluntario where Email='".$logado."'");
 		$logf=mysqli_fetch_array($result);
 		$logfoto=htmlspecialchars($logf['Foto']);
 		$logfotof="./Fotos/FotosVol/".$logfoto;
@@ -397,7 +397,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 								$nascimento=$dia." de ".$mes.", ".$ano;
 								echo "
 								<div class='blog_post trans_200'>
-									<div class='blog_post_image'><img style='min-width:100%;' src='".$Pic."' alt=''></div>
+									<div class='blog_post_image'><img src='".$Pic."' alt=''></div>
 									<div class='blog_post_body'>
 										<div class='blog_post_title'><a href='blog.php?noticia=".$identity."'>".$Titulo."</a></div>
 										<div class='blog_post_meta'>

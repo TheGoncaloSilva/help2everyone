@@ -913,15 +913,12 @@ if($_SERVER['REQUEST_METHOD']=='GET' && isset($_GET['sair'])){
 				echo "<div class='alert alert-warning' role='alert'>
   							Precisa de Atualizar os seus dados!!!
 								</div>";
-								$aprovado=1;
 			}else if(empty($Aprovacao) && $falso==0){
 				echo "<div class='alert alert-danger' role='alert'>
   							A sua conta ainda não foi aprovada, por isso irá ter funcionalidades mínimas!!!
 								</div>";
 								$aprovado=1;
 			}
-
-
   ?>
 
 <!-- Wrapper -->
@@ -1727,16 +1724,12 @@ $tab=null;
 
 																		$comp1= new DateTime($DatafimEvento);
 																		$comp2= new DateTime($dh);
-																		$comp3= new DateTime($DataInicioEvento);
 
-																		if($comp3>$comp2 && $comp1>$comp2){
-																			$estado="<span class='badge badge-danger' title='Inscrições para o evento abertas' style='color:white;background:green;'><i class='fa fa-check'></i> Ativo</span>";
-																		}else if($comp3<=$comp2 && $comp1>=$comp2){
-																			$estado="<span class='badge badge-info' title='Inscrições fechadas' ><i class='fa fa-clock-o'></i> Em execução</span>";
-																		}else if($comp1<$comp2 && $comp3<$comp2){
-																			$estado="<span class='badge badge-success' style='color:white;background:red;' title='Evento Inativo' ><i class='fa fa-times'></i> Inativo</span>";
+																		if($comp1>$comp2){
+																			$estado="<span class='badge badge-danger' style='color:white;background:green;'>Ativo</span>";
+																		}else{
+																			$estado="<span class='badge badge-success' style='color:white;background:red;'>Inativo</span>";
 																		}
-
 																		if($Orgs!=$identidade){
 																			$disable=" disabled";
 																			$out="<a style='margin-top:3px;' href='./index.php?sair=".$IdEvento."#create' class='btn btn-danger'><i class='fa fa-sign-out'></i></a>";
@@ -2187,16 +2180,12 @@ $tab=null;
 
 																				$comp1= new DateTime($DatafimEvento);
 																				$comp2= new DateTime($dh);
-																				$comp3= new DateTime($DataInicioEvento);
 
-																				if($comp3>$comp2 && $comp1>$comp2){
-																					$estado="<span class='badge badge-danger' title='Inscrições para o evento abertas' style='color:white;background:green;'><i class='fa fa-check'></i> Ativo</span>";
+																				if($comp1>$comp2){
+																					$estado="<span class='badge badge-danger' style='color:white;background:green;'>Ativo</span>";
 																					$testar=1;
-																				}else if($comp3<=$comp2 && $comp1>=$comp2){
-																					$estado="<span class='badge badge-info' title='Inscrições fechadas' ><i class='fa fa-clock-o'></i> Em execução</span>";
-																					$testar=2;
-																				}else if($comp1<$comp2 && $comp3<$comp2){
-																					$estado="<span class='badge badge-success' style='color:white;background:red;' title='Evento Inativo' ><i class='fa fa-times'></i> Inativo</span>";
+																				}else{
+																					$estado="<span class='badge badge-success' style='color:white;background:red;'>Inativo</span>";
 																					$testar=2;
 																				}
 
@@ -2216,8 +2205,6 @@ $tab=null;
 																					}else{
 																						if($testar==2){
 																							$out="<a title='Evento Inativo' class='btn btn-danger'><i class='fa fa-ban'></i></a>";
-																						}else if($testar==3){
-
 																						}else{
 																							$out="<a href='./index.php?adicionar=".$IdEvento."#colaborar' title='Adicionar Organização ao Evento' class='btn btn-success'><i class='fa fa-plus'></i></a>";
 																						}

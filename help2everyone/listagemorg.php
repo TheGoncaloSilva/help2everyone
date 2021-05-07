@@ -4,7 +4,7 @@
 		if((isset ($_SESSION['user']) == true)){
 			$logado=$_SESSION['user'];
 			$logtype='Voluntario';
-			$result=mysqli_query($conn,"select Foto from tblvoluntario where Utilizador='".$logado."'");
+			$result=mysqli_query($conn,"select Foto from tblvoluntario where Email='".$logado."'");
 			$logf=mysqli_fetch_array($result);
 			$logfoto=htmlspecialchars($logf['Foto']);
 			$logfotof="./Fotos/FotosVol/".$logfoto;
@@ -101,13 +101,13 @@ if($_SERVER['REQUEST_METHOD']=='GET' && isset($_GET['butcerto']))
 		$Distrito_vol=htmlspecialchars($convertvalues['Distrito']);
 		$Concelho_vol=htmlspecialchars($convertvalues['Concelho']);
 	}else{
-		$selectvalues=mysqli_query($conn,"select * from tblvoluntario where Utilizador='".$logado."'");
+		$selectvalues=mysqli_query($conn,"select * from tblvoluntario where Email='".$logado."'");
 		$convertvalues=mysqli_fetch_array($selectvalues);
 		$pais_vol=htmlspecialchars($convertvalues['Pais']);
 		$Distrito_vol=htmlspecialchars($convertvalues['Distrito']);
 		$Concelho_vol=htmlspecialchars($convertvalues['Concelho']);
 	}
-	$filtselnom="&& Pais like '%".$pais_vol."%' && Distrito like '%".$Distrito_vol."%' && Concelho like '%".$Concelho_vol."%'";
+	$filtselnom="Where Pais like '%".$pais_vol."%' && Distrito like '%".$Distrito_vol."%' && Concelho like '%".$Concelho_vol."%'";
 }
 if($_SERVER['REQUEST_METHOD']=='GET' && isset($_GET['but1']))
 {
@@ -445,7 +445,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 											<option value="6"<?php if($filtroselect==6){echo "selected";} ?>>Distrito</option>
 											<option value="7"<?php if($filtroselect==7){echo "selected";} ?>>Concelho</option>
 											<option value="8"<?php if($filtroselect==8){echo "selected";} ?>>Data de Registo</option>
-											<option value="9"<?php if($filtroselect==9){echo "selected";} ?>>Data de Fundação</option>
+											<option value="9"<?php if($filtroselect==9){echo "selected";} ?>Emailundação</option>
 										</select>
 									</div>
 									<div class="col-md-1" style="padding-top:5px;padding-bottom:5px;">
@@ -635,7 +635,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 
 						<!-- Categories -->
             <div class="sidebar_section">
-							<div class="sidebar_section_title">Área de Intervenção</div>
+							<div class="sidebar_section_title">Área de Atuação</div>
 							<form action="./listagemorg.php" method="POST">
 							<div class="sidebar_categories">
 								<ul>
@@ -724,7 +724,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 										$entrada=mysqli_fetch_array($result);
 										$identity=htmlspecialchars($entrada['Id']);
 										$nome=htmlspecialchars($entrada['Nome']);
-										$users=htmlspecialchars($entrada['Utilizador']);
+										$users=htmlspecialchars($entrada['Email']);
 										$Foto=htmlspecialchars($entrada['Foto']);
                     $Email=htmlspecialchars($entrada['Email']);
 										$Problema=htmlspecialchars($entrada['Problema']);

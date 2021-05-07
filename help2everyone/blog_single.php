@@ -4,7 +4,7 @@
 	if((isset ($_SESSION['user']) == true)){
 	  $logado=$_SESSION['user'];
 		$logtype='Voluntario';
-		$result=mysqli_query($conn,"select Foto from tblvoluntario where Utilizador='".$logado."'");
+		$result=mysqli_query($conn,"select Foto from tblvoluntario where Email='".$logado."'");
 		$logf=mysqli_fetch_array($result);
 		$logfoto=htmlspecialchars($logf['Foto']);
 		$logfotof="./Fotos/FotosVol/".$logfoto;
@@ -425,7 +425,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 								<li>Categoria <a><?php echo $Cat_Noticia; ?></a></li>
 							</ul>
 						</div>
-						<div class="blog_image"><img  style='min-width:100%;' src="<?php echo $Pic1_Noticia; ?>" alt=""></div>
+						<div class="blog_image"><img src="<?php echo $Pic1_Noticia; ?>" alt=""></div>
 						<p><?php echo $Descricao_Noticia; ?></p>
 						<div class="blog_subtitle"><?php echo $Subtitulo_Noticia; ?></div>
 						<p><?php echo $Descricao_Subtitulo_Noticia; ?>.</p>
@@ -500,7 +500,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 											$diference=($date2->diff($date));
 											$diferenca=($date2->diff($date));
 											$diff=$diference->format('%H Horas');
-											$diff2=$diferenca->format('%a dias');
+											$diff2=$diferenca->format('%d dias');
 											//var_dump($diference);
 											if($diff2<1){
 												$difinal=$diff;
@@ -559,7 +559,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 											$diferences=($date3->diff($date1));
 											$diferences1=($date3->diff($date1));
 											$diffs=$diferences->format('%H Horas');
-											$diffs1=$diferences1->format('%a Dias');
+											$diffs1=$diferences1->format('%d Dias');
 											if($diffs1<1){
 												$difinals=$diffs;
 											}else{

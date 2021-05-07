@@ -4,7 +4,7 @@ session_start();
 if((isset ($_SESSION['user']) == true)){
 	$logado=$_SESSION['user'];
 	$logtype='Voluntario';
-	$result=mysqli_query($conn,"select Foto from tblvoluntario where Utilizador='".$logado."'");
+	$result=mysqli_query($conn,"select Foto from tblvoluntario where Email='".$logado."'");
 	$logf=mysqli_fetch_array($result);
 	$logfoto=htmlspecialchars($logf['Foto']);
 	$logfotof="./Fotos/FotosVol/".$logfoto;
@@ -417,7 +417,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 							<div class="newsletter_title">Regista-te para saberes mais</div>
 							<div class="newsletter_subtitle">Para obteres mais pormenores sobre o funcionamento da nossa plataforma.</div>
 						</div>
-						<div class="newsletter_form_container ml-lg-auto ">
+						<div class="newsletter_form_container ml-lg-auto">
 							<a style="padding-top:10px;" href="./Login_Vol/index.php" class=" btn newsletter_button">Voluntário</a>
 							<a style="padding-top:10px;" href="./Login_org/index.php" class=" btn newsletter_button">Organização</a>
 						</div>

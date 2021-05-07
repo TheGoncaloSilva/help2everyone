@@ -4,7 +4,7 @@ session_start();
 if((isset ($_SESSION['user']) == true)){
 	$logado=$_SESSION['user'];
 	$logtype='Voluntario';
-	$result=mysqli_query($conn,"select * from tblvoluntario where Utilizador='".$logado."'");
+	$result=mysqli_query($conn,"select * from tblvoluntario where Email='".$logado."'");
 	$logf=mysqli_fetch_array($result);
 	$logfoto=htmlspecialchars($logf['Foto']);
 	$logfotof="./Fotos/FotosVol/".$logfoto;
@@ -44,7 +44,7 @@ if((isset ($_SESSION['user']) == true)){
 	}else{
 		$logfolder="listagem.php";
 	}
-	$result=mysqli_query($conn,"select * from tblvoluntario where Utilizador='".$logado."'");
+	$result=mysqli_query($conn,"select * from tblvoluntario where Email='".$logado."'");
 	$entrada=mysqli_fetch_array($result);
 	$identidade=htmlspecialchars($entrada['Id']);
 	$msgvisos=0;
@@ -72,18 +72,6 @@ header('Location: ./Resume/index.php');
 		header("Location: ".$_SERVER['PHP_SELF']);
 
 }
-
-if($_SERVER['REQUEST_METHOD']=='GET' && isset($_GET['GetOut'])){
-	if(mysqli_query($conn,"delete from tblvolevento where IdEvento=".$targetevent." && IdVoluntario=".$identidade)){
-		$msgvisos=1;
-	}else{
-		$msgvisos=2;
-	}
-	unset($_GET);
-	header("Location: ".$_SERVER['PHP_SELF']);
-
-}
-
 if($_SERVER['REQUEST_METHOD']=='GET' && isset($_GET['rating']))
 {
  $estrelas=$_GET['rating'];
@@ -879,7 +867,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 
 															$searchvol=mysqli_query($conn,"select * from tblvoluntario where Id='".$IdVol_com."'");
 															$convertvolcom=mysqli_fetch_array($searchvol);
-															$User_com=htmlspecialchars($convertvolcom['Utilizador']);
+															$User_com=htmlspecialchars($convertvolcom['Email']);
 															$Nome_com=htmlspecialchars($convertvolcom['Nome']);
 															$Apelido_com=htmlspecialchars($convertvolcom['Apelido']);
 															$Foto_com=htmlspecialchars($convertvolcom['Foto']);
@@ -894,7 +882,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 															$diference=($date2->diff($date));
 															$diferenca=($date2->diff($date));
 															$diff=$diference->format('%H Horas');
-															$diff2=$diferenca->format('%a dias');
+															$diff2=$diferenca->format('%d dias');
 
 															if($diff2<1){
 																$difinal=$diff;
@@ -970,7 +958,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 															$diferences=($date3->diff($date1));
 															$diferences1=($date3->diff($date1));
 															$diffs=$diferences->format('%H Horas');
-															$diffs1=$diferences1->format('%a Dias');
+															$diffs1=$diferences1->format('%d Dias');
 															if($diffs1<1){
 																$difinals=$diffs;
 															}else{
@@ -1064,7 +1052,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 
 																		$searchvol=mysqli_query($conn,"select * from tblvoluntario where Id='".$IdVol_com."'");
 																		$convertvolcom=mysqli_fetch_array($searchvol);
-																		$User_com=htmlspecialchars($convertvolcom['Utilizador']);
+																		$User_com=htmlspecialchars($convertvolcom['Email']);
 																		$Nome_com=htmlspecialchars($convertvolcom['Nome']);
 																		$Foto_com=htmlspecialchars($convertvolcom['Foto']);
 																		$Pic_com="./Fotos/FotosVol/".$Foto_com;
@@ -1078,7 +1066,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 																		$diferences=($date3->diff($date1));
 																		$diferences1=($date3->diff($date1));
 																		$diffs=$diferences->format('%H Horas');
-																		$diffs1=$diferences1->format('%a Dias');
+																		$diffs1=$diferences1->format('%d Dias');
 																		if($diffs1<1){
 																			$difinals=$diffs;
 																		}else{
@@ -1131,16 +1119,12 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 
 								$comp1= new DateTime($DataFim_Ev);
 								$comp2= new DateTime($dh);
-								$comp3= new DateTime($DataInicio_Ev);
 
-								if($comp3>$comp2 && $comp1>$comp2){
-									$est="<span class='badge badge-danger' title='Inscrições para o evento abertas' style='color:white;background:green;'><i class='fa fa-check'></i> Ativo</span>";
+								if($comp1>$comp2){
+									$est="<span class='badge badge-danger' style='color:white;background:green;'>Ativo</span>";
 									$estado=1;
-								}else if($comp3<=$comp2 && $comp1>=$comp2){
-									$est="<span class='badge badge-info' title='Inscrições fechadas' ><i class='fa fa-clock-o'></i> Em execução</span>";
-									$estado=3;
-								}else if($comp1<$comp2 && $comp3<$comp2){
-									$est="<span class='badge badge-success' style='color:white;background:red;' title='Evento Inativo' ><i class='fa fa-times'></i> Inativo</span>";
+								}else{
+									$est="<span class='badge badge-success' style='color:white;background:red;'>Inativo</span>";
 									$estado=2;
 								}
 								?>
@@ -1220,8 +1204,6 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 										<div class="col-md-6">
 											<form action="./course.php" method="GET">
 											<?php
-											$name="concorrer";
-											$titulo="Aderir do Evento";
 											if($logtype=='Organizacao'){
 												$aderir="disabled title='Precisa de ser um voluntário para apoiar um evento'";
 											}else if($logtype=='Voluntario' && $tasm>=1){
@@ -1234,44 +1216,18 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 												if($verifiq2[0]==null && $D!=null){
 													if($estado==2){
 														$aderir="disabled title='Evento Inativo'";
-													}else if($estado==3){
-														$aderir="disabled title='Inscrições fechadas'";
 													}else{
 														$aderir="title='Concorrer ao evento em causa'";
 													}
 												}else if($D!=null){
-													if($estado==2){
-														$aderir="disabled title='Já aderiu ao evento!'";
-													}else if($estado==3){
-														$aderir="disabled title='Já aderiu ao evento!'";
-													}else{
-														$aderir="title='Já aderiu ao evento!'";
-														$name="GetOut";
-														$titulo="Sair do Evento";
-													}
+													$aderir="disabled title='Já aderiu ao evento!'";
 												}else{
 													$aderir="disabled title='Atualize os seus dados primeiro!'";
 												}
 											}else{
-												$verifiq=mysqli_query($conn,"select * from tblvolevento where IdVoluntario='".$identidade."'&& IdEvento='".$Id_Ev."'");
-												$verifiq2=mysqli_fetch_array($verifiq);
-													if($verifiq2[0]!=null){
-														$aderir="disabled title='Já aderiu ao evento!'";
-														if($estado==2){
-															$aderir="disabled title='Já aderiu ao evento!'";
-														}else if($estado==3){
-															$aderir="disabled title='Já aderiu ao evento!'";
-														}else{
-															$aderir="title='Já aderiu ao evento!'";
-															$name="GetOut";
-															$titulo="Sair do Evento";
-														}
-													}else{
-														$aderir="disabled title='Sem vagas disponíveis'";
-													}
-											}
-											?>
-											<button class="btn btn-primary" name=<?php echo $name ?> <?php echo $aderir; ?>><?php echo $titulo ?></button>
+													$aderir="disabled title='Sem vagas disponíveis'";
+											}?>
+											<button class="btn btn-primary" name="concorrer" <?php echo $aderir; ?>>Aderir ao evento</button>
 										</form>
 										</div>
 									<div class="col-md-2">

@@ -22,7 +22,7 @@
 	}else{
 		$falso=0;
 	}
-	$result=mysqli_query($conn,"select * from tblvoluntario where Utilizador='".$volvinda."'");
+	$result=mysqli_query($conn,"select * from tblvoluntario where Email='".$volvinda."'");
 	$entrada=mysqli_fetch_array($result);
 	$identidade=htmlspecialchars($entrada['Id']);
 	$utilizador=htmlspecialchars($entrada['Utilizador']);
@@ -314,7 +314,7 @@ if($_SERVER['REQUEST_METHOD']=='GET' && isset($_GET['rating']))
 <body>
 
   <?php
-      $result=mysqli_query($conn,"select * from tblvoluntario where Utilizador='".$volvinda."'");
+      $result=mysqli_query($conn,"select * from tblvoluntario where Email='".$volvinda."'");
       $entrada=mysqli_fetch_array($result);
       $identidade=htmlspecialchars($entrada['Id']);
       $foto=htmlspecialchars($entrada['Foto']);
@@ -629,7 +629,6 @@ $tab=null;
                         <li class="tab" style="display:none;" hidden><a href="#portfolio">PORTFOLIO</a></li>
                         <li class="tab" style="display:none;" hidden><a href="#blog">BLOG</a></li>
                         <li class="tab" style="display:none;" hidden><a href="#contact">CONTACT</a></li>
-												<li class="tab"	<?php echo $property2; echo $property; ?>><a href="#compromisso">COMPROMISSOS</a></li>
                         <li class="tab"	<?php echo $property2; echo $property; ?>><a href="#informacao">INFORMAÇÕES</a></li>
 												<?php echo $tab; ?>
                     </ul>
@@ -1246,100 +1245,6 @@ $tab=null;
                 </div>
             </div>
 
-						<!-- Compromissos -->
-						<div id="compromisso">
-  						<div class="section-title top_15"><span></span><h2>Compromissos</h2></div>
-							<p class="bottom_15">Aqui estão presentes todos os eventos a que aderiu</p>
-
-							<?php
-							$cmd=mysqli_query($conn,"select IdEvento from tblvolevento where IdVoluntario=".$identidade);
-							$a=0;
-							$val=array();
-							if(!empty($cmd)){
-								while ($use=mysqli_fetch_array($cmd)) {
-									$val[$a]=$use[0];
-									$a++;
-
-								}
-								$eventos=count($val);
-							}
-							if(!empty($eventos)){
-								for($i=0;$i<$eventos;$i++){
-									$select=mysqli_query($conn,"select * from tblevento where Id='".$val[$i]."' && Inativo=0");
-									$row=mysqli_fetch_array($select);
-									$IdEvento=htmlspecialchars($row['Id']);
-									$NomeEvento=htmlspecialchars($row['Nome']);
-									$BreveDescEvento=htmlspecialchars($row['BreveDesc']);
-									$DataInicioEvento=htmlspecialchars($row['DataInicio']);
-									$DataFimEvento=htmlspecialchars($row['DataTermino']);
-									$Dur=htmlspecialchars($row['Duracao']);
-									$Help=htmlspecialchars($row['Quant_Helps']);
-
-									$ts2 = strtotime($DataInicioEvento);
-									$dias = date('d', $ts2);
-									$meses = date('m', $ts2);
-									$anos = date('Y', $ts2);
-
-									switch ($meses) {
-										case '01':$meses='Janeiro';break;
-										case '02':$meses='Fevereiro';break;
-										case '03':$meses='Março';break;
-										case '04':$meses='Abril';break;
-										case '05':$meses='Maio';break;
-										case '06':$meses='Junho';break;
-										case '07':$meses='Julho';break;
-										case '08':$meses='Agosto';break;
-										case '09':$meses='Setembro';break;
-										case '10':$meses='Outubro';break;
-										case '11':$meses='Novembro';break;
-										case '12':$meses='Dezembro';break;
-										default:break;
-									}
-									$DataInicioEvento=$dias." de ".$meses." de ".$anos;
-
-												$tempo = strtotime($DataFimEvento);
-												$day = date('d', $tempo);
-												$month = date('m', $tempo);
-												$year = date('Y', $tempo);
-
-												switch ($month) {
-													case '01':$month='Janeiro';break;
-													case '02':$month='Fevereiro';break;
-													case '03':$month='Março';break;
-													case '04':$month='Abril';break;
-													case '05':$month='Maio';break;
-													case '06':$month='Junho';break;
-													case '07':$month='Julho';break;
-													case '08':$month='Agosto';break;
-													case '09':$month='Setembro';break;
-													case '10':$month='Outubro';break;
-													case '11':$month='Novembro';break;
-													case '12':$month='Dezembro';break;
-													default:break;
-												}
-												$DataFimEvento=$day." de ".$month." de ".$year;
-
-									echo "<div class='alert alert-success' role='alert'>
-									<div class='row'>
-										<div class='col-md-8'>
-											<p style='font-size:100%;vertical-align: bottom;'><strong><a href='./../courses.php?abrir=".$IdEvento."'>".$NomeEvento."</a></strong> - ".$DataInicioEvento." <strong>até</strong> ".$DataFimEvento."</p>
-										</div>
-										<div class='col-md-2'>
-											<p style='font-size:100%;'><strong>Duração: </strong>".$Dur."</p>
-											<p style='font-size:100%;'><strong>Helps: </strong>".$Help."</p>
-										</div>
-										<div class='col-md-2'>
-										<button type='button' class='close' title='Limpar alerta' data-dismiss='alert' aria-label='Close'><i class='fa fa-times'></i></button>
-										</div>
-									</div>
-									</div>";
-							}
-						}
-							 ?>
-
-
-						</div>
-
             <!-- Informação -->
             <div id="informacao">
 							<?php
@@ -1378,7 +1283,7 @@ $tab=null;
                         <div class="row">
 													<div class="col-md-12" style="padding-bottom: 10px;">
 														<label>Foto<?php if($escolherfoto==true){echo "*";} ?> </label>
-														<input type="file" id="ficheiroup" name="ficheiroup" class="btn btn-primary" accept="image/png, image/jpeg" style="padding-top: 5px; max-width:100%;" <?php if($escolherfoto==true){echo "required";} ?>>
+														<input type="file" id="ficheiroup" name="ficheiroup" class="btn btn-primary" accept="image/png, image/jpeg" style="padding-top: 5px;" <?php if($escolherfoto==true){echo "required";} ?>>
 													</div>
                             <div class="col-md-6">
 															<label>Nome* </label>

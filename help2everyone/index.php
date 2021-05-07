@@ -4,7 +4,7 @@
 	if((isset ($_SESSION['user']) == true)){
 	  $logado=$_SESSION['user'];
 		$logtype='Voluntario';
-		$result=mysqli_query($conn,"select Foto from tblvoluntario where Utilizador='".$logado."'");
+		$result=mysqli_query($conn,"select Foto from tblvoluntario where Email='".$logado."'");
 		$logf=mysqli_fetch_array($result);
 		$logfoto=htmlspecialchars($logf['Foto']);
 		$logfotof="./Fotos/FotosVol/".$logfoto;

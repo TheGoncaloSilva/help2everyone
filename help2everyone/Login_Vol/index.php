@@ -1,11 +1,8 @@
 <?php
 include('./../inicligacao.ini');
-include_once 'gpConfig.php';
 $ermsg=false;
-unset($_SESSION['tokens']);
+session_start();
 
-//Reset OAuth access token
-$gClient->revokeToken();
 if((isset ($_SESSION['user']) == true)){
   session_destroy();
   unset($_SESSION['user']);
@@ -13,10 +10,7 @@ if((isset ($_SESSION['user']) == true)){
   session_destroy();
   unset($_SESSION['nome']);
 }
-unset($_SESSION['tokens']);
 
-//Reset OAuth access token
-$gClient->revokeToken();
 if ($_SERVER['REQUEST_METHOD']=='POST') {
 
   if (!empty($_POST['User'])) {
@@ -26,7 +20,8 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
 		$pass=htmlspecialchars($_POST['Password']);
 		$pass=hash('sha256',$pass);
 	}
-	  $conta=mysqli_query($conn,"SELECT Id from tblvoluntario where Utilizador='".$user."' && Password='".$pass."'");
+  
+	  $conta=mysqli_query($conn,"SELECT Id from tblvoluntario where Email='".$user."' && Password='".$pass."'");
 		$linha=mysqli_fetch_array($conta);
 
     if($linha[0]!=null){
@@ -103,14 +98,8 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
 							<a href="./register.php" class="txt1">
 								Regista-te!!!
 							</a>
-
 						</div>
-            <div>
-              <a class="txt1" href="./forgot.php">
-                <i class="fa fa-key" aria-hidden="true"></i>
-                Esqueceu palavra-passe?
-              </a>
-            </div>
+
 					</div>
 
 					<div class="container-login100-form-btn">
@@ -119,22 +108,17 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
 						</button>
 					</div>
 
-					<div class="text-center p-t-30 p-b-20">
+					<div class="text-center p-t-46 p-b-20">
 						<a class="txt1" href="./../index.php">
 							<i class="fa fa-arrow-left" aria-hidden="true"></i>
 							Sair
 						</a>
 					</div>
 
-          <div class="text-center  p-b-20">
-            <span class="txt2">
-              Iniciar Sessão com:
-            </span>
-          </div>
-
-          <div class="login100-form-social flex-c-m">
-            <a href="index2.php" class="login100-form-social-item flex-c-m bg1 m-r-5">
-              <img src="images/google.png">
+          <div class="text-center">
+            <a class="txt1" href="./forgot.php">
+              <i class="fa fa-key" aria-hidden="true"></i>
+              Esqueceu palavra-passe?
             </a>
           </div>
 				</form>

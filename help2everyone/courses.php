@@ -4,7 +4,7 @@
 		if((isset ($_SESSION['user']) == true)){
 			$logado=$_SESSION['user'];
 			$logtype='Voluntario';
-			$result=mysqli_query($conn,"select Foto from tblvoluntario where Utilizador='".$logado."'");
+			$result=mysqli_query($conn,"select Foto from tblvoluntario where Email='".$logado."'");
 			$logf=mysqli_fetch_array($result);
 			$logfoto=htmlspecialchars($logf['Foto']);
 			$logfotof="./Fotos/FotosVol/".$logfoto;
@@ -93,7 +93,7 @@ if($_SERVER['REQUEST_METHOD']=='GET' && isset($_GET['butcerto']))
 		$Distrito_vol=htmlspecialchars($convertvalues['Distrito']);
 		$Concelho_vol=htmlspecialchars($convertvalues['Concelho']);
 	}else{
-		$selectvalues=mysqli_query($conn,"select * from tblvoluntario where Utilizador='".$logado."'");
+		$selectvalues=mysqli_query($conn,"select * from tblvoluntario where Email='".$logado."'");
 		$convertvalues=mysqli_fetch_array($selectvalues);
 		$pais_vol=htmlspecialchars($convertvalues['Pais']);
 		$Distrito_vol=htmlspecialchars($convertvalues['Distrito']);
@@ -544,7 +544,6 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 									$Desc=htmlspecialchars($entrada['Descricao']);
 									$BreveDesc=htmlspecialchars($entrada['BreveDesc']);
 									$DataFim_Ev=htmlspecialchars($entrada['DataTermino']);
-									$DataInicio_Ev=htmlspecialchars($entrada['DataInicio']);
 									$Vagas=htmlspecialchars($entrada['NumVagas']);
 									$Dur=htmlspecialchars($entrada['Duracao']);
 									$Help=htmlspecialchars($entrada['Quant_Helps']);
@@ -583,14 +582,11 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 
 									$comp1= new DateTime($DataFim_Ev);
 									$comp2= new DateTime($dh);
-									$comp3= new DateTime($DataInicio_Ev);
 
-									if($comp3>$comp2 && $comp1>$comp2){
-										$est="<span class='badge badge-danger' title='Inscrições para o evento abertas' style='color:white;background:green;'><i class='fa fa-check'></i> Ativo</span>";
-									}else if($comp3<=$comp2 && $comp1>=$comp2){
-										$est="<span class='badge badge-info' title='Inscrições fechadas' ><i class='fa fa-clock-o'></i> Em execução</span>";
-									}else if($comp1<$comp2 && $comp3<$comp2){
-										$est="<span class='badge badge-success' style='color:white;background:red;' title='Evento Inativo' ><i class='fa fa-times'></i> Inativo</span>";
+									if($comp1>$comp2){
+										$est="<span class='badge badge-danger' style='color:white;background:green;'>Ativo</span>";
+									}else{
+										$est="<span class='badge badge-success' style='color:white;background:red;'>Inativo</span>";
 									}
 
 									echo "
@@ -664,7 +660,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 
 						<!-- Categories -->
 						<div class="sidebar_section">
-							<div class="sidebar_section_title">Área de Intervenção</div>
+							<div class="sidebar_section_title">Área de Atuação</div>
 							<form action="./courses.php" method="GET">
 							<div class="sidebar_categories">
 								<ul>
@@ -892,6 +888,3 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['btn4']))
 <script src="js/courses.js"></script>
 </body>
 </html>
-<?php
-include('./fechligacao.ini');
-?>

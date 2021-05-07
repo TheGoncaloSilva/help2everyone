@@ -137,10 +137,9 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
 		<div class="container-login100">
 			<div class="wrap-login100">
 				<form class="login100-form validate-form" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-					<span class="login100-form-title">
+					<span class="login100-form-title p-b-43">
 						Registe-se
 					</span>
-          <p align='center' class='p-b-43'>Para concluir o registo preencha os restantes campos</p>
 
 					<div class="row">
 						<div class="col-md-6">
